@@ -75,7 +75,6 @@ router.get('/me', VerifyToken, function(req, res, next) {
 
 });
 
-
 router.post('/generateToken', function(req, res) {
   
     //var hashedPassword = bcrypt.hashSync(req.body.password, 8);
