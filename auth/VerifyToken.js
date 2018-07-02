@@ -1,6 +1,6 @@
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('../config'); // get our config file
-var userDetails = require('../User/UserDetails');
+var userDetails = require('../user/UserDetails');
 
 function verifyToken(req, res, next) {
 
