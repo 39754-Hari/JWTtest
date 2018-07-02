@@ -81,8 +81,8 @@ router.post('/generateToken', function(req, res) {
     //var hashedPassword = bcrypt.hashSync(req.body.password, 8);
     console.log('req: ', req.body);  
     var user= {
-      'email': req.body.email,
-      'password': req.body.password,
+//       'email': req.body.email,
+//       'password': req.body.password,
       'userId' : req.body.userId
     }
     if(userDetails.data[req.body.userId]==undefined){
@@ -92,8 +92,8 @@ router.post('/generateToken', function(req, res) {
      console.log('Token: ', token);    
     var newUser = {
      'userId' : req.body.userId,
-     'token' : token,
-     'user' : user
+     'token' : token
+     //'user' : user
      }
      userDetails.data[req.body.userId] = newUser;
      console.log('User obj:',userDetails.data);
