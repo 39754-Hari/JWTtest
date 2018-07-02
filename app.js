@@ -7,8 +7,8 @@ app.get('/api', function (req, res) {
   res.status(200).send('API works.');
 });
 
-var UserController = require(__root + 'user/UserController');
-app.use('/api/users', UserController);
+// var UserController = require(__root + 'user/UserController');
+// app.use('/api/users', UserController);
 
 var AuthController = require(__root + 'auth/AuthController');
 app.use('/api/auth', AuthController);
