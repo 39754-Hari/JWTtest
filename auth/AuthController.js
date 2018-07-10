@@ -19,33 +19,7 @@ var bcrypt = require('bcryptjs');
 var config = require('../config'); // get config file
 
 
-var ADconfig = { url: 'ldap://172.25.180.135:389',
-baseDN: 'dc=pwtest1,dc=com',
-username: 'HRADM@pwtest1.com',
-password: 'Isghelp123' }
-var ad = new ActiveDirectory(ADconfig);
 
-ADauthenticate = function(){
-  return new Promise(function (resolve,reject){
-  console.log('insideAD');
-  var username = '37086';
-  var password = 'Isghelp123';
-   
-  ad.authenticate(username, password, function(err, auth) {
-    if (err) {
-      var errmsg = 'ERROR: '+JSON.stringify(err);
-      resolve (errmsg);
-    }
-    
-    if (auth) {
-      resolve ('Authenticated');
-    }
-    else {
-      resolve ('Authentication failed!');
-    }
-  });
-});
-}
 
 router.post('/login', function(req, res) {
 
@@ -110,7 +84,7 @@ router.post('/generateTocken', function(req, res) {
   
     //var hashedPassword = bcrypt.hashSync(req.body.password, 8);
   console.log('Inside generatetoken');
-    ADauthenticate()
+    //ADauthenticate()
     .then(function(result){
       if(result == 'Authenticated'){
         console.log('req: ', req.body);  
