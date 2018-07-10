@@ -8,6 +8,8 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 var User = require('../user/User');
 var userDetails = require('../user/UserDetails')
+var ActiveDirectory = require('activedirectory');
+
 
 /**
  * Configure JWT
@@ -15,6 +17,35 @@ var userDetails = require('../user/UserDetails')
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var bcrypt = require('bcryptjs');
 var config = require('../config'); // get config file
+
+
+var ADconfig = { url: 'ldap://172.25.180.135:389',
+baseDN: 'dc=pwtest1,dc=com',
+username: 'HRADM@pwtest1.com',
+password: 'Isghelp123' }
+var ad = new ActiveDirectory(ADconfig);
+
+ADauthenticate = function(){
+  return new Promise(function (resolve,reject){
+  console.log('insideAD');
+  var username = '37086';
+  var password = 'Isghelp123';
+   
+  ad.authenticate(username, password, function(err, auth) {
+    if (err) {
+      var errmsg = 'ERROR: '+JSON.stringify(err);
+      resolve (errmsg);
+    }
+    
+    if (auth) {
+      resolve ('Authenticated');
+    }
+    else {
+      resolve ('Authentication failed!');
+    }
+  });
+});
+}
 
 router.post('/login', function(req, res) {
 
@@ -75,39 +106,47 @@ router.get('/me', VerifyToken, function(req, res, next) {
 
 });
 
-router.post('/generateToken', function(req, res) {
+router.post('/generateTocken', function(req, res) {
   
     //var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-    console.log('req: ', req.body);  
-    var user= {
-//       'email': req.body.email,
-//       'password': req.body.password,
-      'userId' : req.body.userId
-    }
-    if(userDetails.data[req.body.userId]==undefined){
-      var token = jwt.sign({ data: user }, config.secret, {
-        expiresIn: 10 // expires in 24 hours
-     });
-     console.log('Token: ', token);    
-    var newUser = {
-     'userId' : req.body.userId,
-     'token' : token
-     //'user' : user
-     }
-     userDetails.data[req.body.userId] = newUser;
-     console.log('User obj:',userDetails.data);
-         res.status(200).send({ auth: true, token: token, message : 'new user registered' });
-    }  
-    else{
-
-      res.status(200).send({ auth: true, token: token, message : 'existing user' });
-    }
-    
+    ADauthenticate()
+    .then(function(result){
+      if(result == 'Authenticated'){
+        console.log('req: ', req.body);  
+        var user= {
+          'username': req.body.userName,
+          'password': req.body.password,
+          'userId' : req.body.userId
+        }
+        if(userDetails.data[req.body.userId]==undefined){
+          var token = jwt.sign({ data: user }, config.secret, {
+            expiresIn: 300 // expires in 24 hours
+         });
+         console.log('Token: ', token);    
+        var newUser = {
+         'userId' : req.body.userId,
+         'token' : token,
+         'user' : user
+         }
+         userDetails.data[req.body.userId] = newUser;
+         console.log('User obj:',userDetails.data);
+        // ADauthenticate();
+             res.status(200).send({ auth: true, token: token, message : 'new user registered' });
+        }  
+        else{    
+          res.status(200).send({ auth: true, token: token, message : 'existing user' });
+        }      
+      }
+      else{
+        res.status(200).send({ auth: false, token: token, message : 'invalid user' });
+      }          
+    });
   });
-
 
   router.post('/verify', function(req, res) {
     var userInfo = userDetails.data[req.body.userId];
+    var decodedToken = jwt.decode(userInfo.token, {complete: true});
+    console.log('decodedToken',decodedToken);
     if (!userInfo.token) 
       return res.status(403).send({ auth: false, message: 'No token provided.' });
   
