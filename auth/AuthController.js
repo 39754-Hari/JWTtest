@@ -109,6 +109,7 @@ router.get('/me', VerifyToken, function(req, res, next) {
 router.post('/generateTocken', function(req, res) {
   
     //var hashedPassword = bcrypt.hashSync(req.body.password, 8);
+  console.log('Inside generatetoken');
     ADauthenticate()
     .then(function(result){
       if(result == 'Authenticated'){
