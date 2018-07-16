@@ -20,8 +20,10 @@ var config = require('../config'); // get config file
 
 var ADconfig = { url: 'ldap://18.218.71.100:389', 
 baseDN: 'dc=chat,dc=enterprise,dc=com', 
-username: 'Administrator', 
-password: '$3Xke?v?GU6' } 
+//username: 'Administrator', 
+//password: '$3Xke?v?GU6' } 
+username: 'chat\Deb', 
+password: 'Test@123' }
 
 var ad = new ActiveDirectory(ADconfig);
 
