@@ -44,13 +44,16 @@ ADauthenticate = function(){
   ad.authenticate(username, password, function(err, auth) {
     if (err) {
       var errmsg = 'ERROR: '+JSON.stringify(err);
+      console.log(errmsg);
       resolve (errmsg);
     }
     
     if (auth) {
+      console.log('authenticated');
       resolve ('Authenticated');
     }
     else {
+      console.log('Authentication failed!');
       resolve ('Authentication failed!');
     }
   });
