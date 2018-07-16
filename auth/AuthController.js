@@ -37,8 +37,7 @@ ADauthenticate = function(){
       console.log('ERROR: ' +JSON.stringify(err));
       return;
     }
-   
-    console.log('getRootDSE: '+JSON.stringify(result));
+       console.log('getRootDSE: '+JSON.stringify(result));
   });  
    
   ad.authenticate(username, password, function(err, auth) {
