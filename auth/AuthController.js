@@ -28,7 +28,7 @@ var ad = new ActiveDirectory(ADconfig);
 ADauthenticate = function(){
   return new Promise(function (resolve,reject){
   console.log('insideAD');
-  var username = 'Deb';
+  var username = 'chat\Deb';
   var password = 'Test@123';
     
   var url = 'ldap://18.218.71.100:389';
