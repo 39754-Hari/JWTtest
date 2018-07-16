@@ -30,6 +30,16 @@ ADauthenticate = function(){
   console.log('insideAD');
   var username = 'thrilochan';
   var password = 'Test@123';
+    
+  var url = 'ldap://18.218.71.100:389';
+  ActiveDirectory.prototype.getRootDSE(url, function(err, result) {
+    if (err) {
+      console.log('ERROR: ' +JSON.stringify(err));
+      return;
+    }
+   
+    console.log('getRootDSE: '+JSON.stringify(result));
+  });  
    
   ad.authenticate(username, password, function(err, auth) {
     if (err) {
