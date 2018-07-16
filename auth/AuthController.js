@@ -18,6 +18,34 @@ var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var bcrypt = require('bcryptjs');
 var config = require('../config'); // get config file
 
+var ADconfig = { url: 'ldap://18.218.71.100:389', 
+baseDN: 'dc=chat,dc=enterprise,dc=com', 
+username: 'Administrator', 
+password: '$3Xke?v?GU6' } 
+
+var ad = new ActiveDirectory(ADconfig);
+
+ADauthenticate = function(){
+  return new Promise(function (resolve,reject){
+  console.log('insideAD');
+  var username = 'thrilochan';
+  var password = 'Test@123';
+   
+  ad.authenticate(username, password, function(err, auth) {
+    if (err) {
+      var errmsg = 'ERROR: '+JSON.stringify(err);
+      resolve (errmsg);
+    }
+    
+    if (auth) {
+      resolve ('Authenticated');
+    }
+    else {
+      resolve ('Authentication failed!');
+    }
+  });
+});
+}
 
 
 
@@ -83,8 +111,7 @@ router.get('/me', VerifyToken, function(req, res, next) {
 router.post('/generateTocken', function(req, res) {
   
     //var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-  console.log('Inside generatetoken');
-    //ADauthenticate()
+  ADauthenticate()
     .then(function(result){
       if(result == 'Authenticated'){
         console.log('req: ', req.body);  
