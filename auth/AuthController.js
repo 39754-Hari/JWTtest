@@ -22,7 +22,7 @@ var ADconfig = { url: 'ldap://18.218.71.100:389', 
 baseDN: 'dc=chat,dc=enterprise,dc=com', 
 //username: 'Administrator', 
 //password: '$3Xke?v?GU6' } 
-username: 'chat\Deb', 
+username: 'Deb@chat.enterprise.com', 
 password: 'Test@123' }
 
 var ad = new ActiveDirectory(ADconfig);
@@ -30,7 +30,7 @@ var ad = new ActiveDirectory(ADconfig);
 ADauthenticate = function(){
   return new Promise(function (resolve,reject){
   console.log('insideAD');
-  var username = 'chat\Deb';
+  var username = 'Deb';
   var password = 'Test@123';
     
   var url = 'ldap://18.218.71.100:389';
