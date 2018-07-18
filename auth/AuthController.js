@@ -161,7 +161,7 @@ router.post('/generateToken', function(req, res) {
 
   router.post('/verify', function(req, res) {
     var userInfo = userDetails.data[req.body.userId];
-    console.log('UserInfo',userInfo);
+    console.log('UserInfo',req.body.userId);
     var decodedToken = jwt.decode(userInfo.token, {complete: true});
     console.log('decodedToken',decodedToken);
     if (!userInfo.token) 
