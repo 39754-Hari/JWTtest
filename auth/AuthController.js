@@ -27,12 +27,13 @@ password: 'Test@123' }
 
 var ad = new ActiveDirectory(ADconfig);
 
-ADauthenticate = function(){
+ADauthenticate = function(req){
   return new Promise(function (resolve,reject){
   console.log('insideAD');
-  var username = 'Deb';
-  var password = 'Test@123';
-    
+  //var username = 'Deb';
+  //var password = 'Test@123';
+  var username =  req.body.userName;
+  var password =  req.body.password
   var url = 'ldap://18.218.71.100:389';
   ActiveDirectory.prototype.getRootDSE(url, function(err, result) {
     if (err) {
@@ -125,7 +126,7 @@ router.get('/me', VerifyToken, function(req, res, next) {
 router.post('/generateToken', function(req, res) {
   
     //var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-  ADauthenticate()
+  ADauthenticate(req)
     .then(function(result){
       if(result == 'Authenticated'){
         console.log('req: ', req.body);  
